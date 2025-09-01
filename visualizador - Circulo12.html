@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizador MapView 360</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; }
+    #map { width: 100%; height: 100%; }
+
+    /* Caixa de busca */
+    .search-box {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      z-index: 1000;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+    }
+    .search-box input {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 4px 8px;
+      outline: none;
+      min-width: 180px;
+      font-family: 'Arial', sans-serif;
+    }
+    .search-box button {
+      background: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: 'Arial', sans-serif;
+    }
+    .search-box button:hover {
+      background: #005fcc;
+    }
+
+    /* Legenda */
+    .legend {
+      line-height: 18px;
+      color: #333;
+      background: white;
+      padding: 8px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      font-size: 13px;
+    }
+    .legend i {
+      width: 14px;
+      height: 14px;
+      float: left;
+      margin-right: 6px;
+      opacity: 0.9;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="search-box" style="left: 50px;">
+    <strong>Buscar Registro por Código:</strong>
+    <input type="text" id="searchInput" placeholder="Digite o código..." list="codigosDisponiveis">
+    <datalist id="codigosDisponiveis"></datalist>
+    <button onclick="buscarRegistro()">Buscar</button>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Inicializa mapa
+    const map = L.map('map').setView([-14.2350, -51.9253], 4); // Centro do Brasil, zoom 4
+
+    // Fundos de mapa
+    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 22,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const google = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+      maxZoom: 22,
+      attribution: '&copy; Google Maps'
+    });
+
+    const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 22,
+      attribution: '&copy; CartoDB'
+    });
+
+    L.control.layers({
+      "OpenStreetMap": osm,
+      "Google Maps": google,
+      "CartoDB Positron": positron
+    }).addTo(map);
+
+    // Temática
+    const thematic = {
+      "buraco": { color: "red", radius: 8 },
+      "trinca": { color: "orange", radius: 10 },
+      "afundamento": { color: "blue", radius: 12 },
+      "ondulação": { color: "green", radius: 14 }
+    };
+
+    const circleMap = {};
+    const datalist = document.getElementById("codigosDisponiveis");
+
+    // URL raw do CSV no GitHub (sem problemas de CORS)
+    const csvUrl = 'https://raw.githubusercontent.com/gilmaracacio/GSA/main/BASETS.csv';
+
+    // Dados hardcoded como fallback (para testes se o GitHub falhar)
+    const fallbackFeatures = [
+      { coords: [-15.548247, -56.086348], props: {codigo:"1756410218571", tipo:"buraco", Estatus:"Fio", dado1:"Teste1", dado2:"Asfalto", responsavel:"João", data:"2025-08-29"} },
+      { coords: [-15.548400, -56.086200], props: {codigo:"1756410218572", tipo:"trinca", Estatus:"Teste", dado1:"Pavimento", dado2:"Betume", responsavel:"Maria", data:"2025-08-28"} },
+      { coords: [-15.548100, -56.086500], props: {codigo:"1756410218573", tipo:"afundamento", Estatus:"Ual", dado1:"Subsolo", dado2:"Areia", responsavel:"Pedro", data:"2025-08-27"} },
+      { coords: [-15.548300, -56.086600], props: {codigo:"12555A_funciona", tipo:"ondulação", Estatus:"Fio", dado1:"Camada", dado2:"Asfalto", responsavel:"Ana", data:"2025-08-26"} }
+    ];
+
+    // Carrega dados do CSV
+    fetch(csvUrl)
+      .then(response => {
+        console.log('Status da resposta:', response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log('Conteúdo recebido (primeiros 200 chars):', data.substring(0, 200));
+        if (!data.includes('codigo,tipo,lat,lon')) {
+          throw new Error('Conteúdo não é CSV válido (pode ser HTML ou vazio)');
+        }
+        const features = parseCSV(data);
+        if (features.length === 0) {
+          throw new Error('CSV parseado, mas sem dados válidos');
+        }
+        createMarkers(features);
+        console.log('CSV carregado com sucesso:', features.length, 'registros');
+        // Centraliza o mapa nos pontos (descomente se desejar)
+        // map.fitBounds(L.featureGroup(Object.values(circleMap)).getBounds());
+      })
+      .catch(error => {
+        console.error('Erro detalhado ao carregar CSV:', error);
+        alert(`Falha ao carregar CSV: ${error.message}\nUsando dados de fallback. Verifique o console (F12).`);
+        createMarkers(fallbackFeatures);
+      });
+
+    // Função para parsear o CSV
+    function parseCSV(csvText) {
+      console.log('Parseando CSV...');
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(',').map(header => header.trim());
+      console.log('Cabeçalhos:', headers);
+      const features = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+        if (values.length !== headers.length) {
+          console.warn('Linha inválida ignorada:', lines[i]);
+          continue;
+        }
+
+        const props = {};
+        headers.forEach((header, index) => {
+          props[header] = values[index] ? values[index].replace(/^"|"$/g, '').trim() : '';
+        });
+
+        const lat = parseFloat(props.lat);
+        const lon = parseFloat(props.lon);
+        if (isNaN(lat) || isNaN(lon)) {
+          console.warn('Coordenadas inválidas ignoradas:', props.codigo);
+          continue;
+        }
+
+        // Define valores padrão para campos ausentes no CSV
+        props.Estatus = props.Estatus || 'Não especificado';
+        props.responsavel = props.responsavel || 'Não especificado';
+        props.data = props.data || 'Não especificada';
+
+        features.push({
+          coords: [lat, lon],
+          props: props
+        });
+      }
+      console.log('Features parseadas:', features.length);
+      return features;
+    }
+
+    // Função para criar os marcadores
+    function createMarkers(features) {
+      features.forEach(f => {
+        const center = f.coords;
+        const p = f.props;
+        const style = thematic[p.tipo] || { color: "gray", radius: 6 };
+
+        const circle = L.circleMarker(center, {
+          radius: style.radius,
+          color: style.color,
+          weight: 2,
+          fillOpacity: 0.7,
+          fillColor: style.color
+        }).addTo(map);
+
+        circle.bindPopup(`
+          <b>Tipo:</b> ${p.tipo}<br>
+          <b>Código:</b> ${p.codigo}<br>
+          <b>Estatus:</b> ${p.Estatus}<br>
+          <b>Dado 1:</b> ${p.dado1}<br>
+          <b>Dado 2:</b> ${p.dado2}<br>
+          <b>Responsável:</b> ${p.responsavel}<br>
+          <b>Data:</b> ${p.data}
+        `);
+
+        circle.on("click", function() {
+          Object.values(circleMap).forEach(c => {
+            const t = thematic[c.featureTipo];
+            c.setStyle({ radius: t.radius, color: t.color, fillColor: t.color });
+          });
+          this.setStyle({
+            radius: style.radius * 1.1,
+            color: "black",
+            fillColor: style.color
+          });
+        });
+
+        circle.featureTipo = p.tipo;
+        circleMap[p.codigo] = circle;
+
+        const opt = document.createElement("option");
+        opt.value = p.codigo;
+        datalist.appendChild(opt);
+      });
+    }
+
+    // Buscar por código
+    function buscarRegistro() {
+      const code = document.getElementById("searchInput").value.trim();
+      if (circleMap[code]) {
+        map.setView(circleMap[code].getLatLng(), 18);
+        circleMap[code].openPopup();
+        circleMap[code].fire("click");
+      } else {
+        alert("Registro não encontrado!");
+      }
+    }
+
+    // Legenda
+    const legend = L.control({position: 'bottomright'});
+    legend.onAdd = function () {
+      const div = L.DomUtil.create('div', 'legend');
+      div.innerHTML += "<b>Legenda</b><br>";
+      for (let key in thematic) {
+        div.innerHTML +=
+          '<i style="background:' + thematic[key].color +
+          '; width:' + thematic[key].radius + 'px; height:' + thematic[key].radius + 'px;"></i> ' +
+          key + '<br>';
+      }
+      return div;
+    };
+    legend.addTo(map);
+  </script>
+</body>
+</html>
