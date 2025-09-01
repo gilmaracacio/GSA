@@ -19,10 +19,10 @@ FORTALEZA,ondulação,-8.749,-60.440,62,62Certo,Em aprovação,Gilmar Acacio,01/
 SANTO ANTONIO,ondulação,-8.765,-61.162,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CACHOEIRINHA,ondulação,-8.762,-60.402,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 AGUA AZUL,ondulação,-8.771,-60.857,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-NOVA VIDA,ondulação,-8.788,-60.406,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+NOVA VIDA,buraco,-8.788,-60.406,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 MARCO,ondulação,-8.807,-61.195,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SANTA ROSA,ondulação,-8.805,-60.403,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-MORCEGUEIRA,ondulação,-8.817,-60.849,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+MORCEGUEIRA,buraco,-8.817,-60.849,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BOCA DO JATUARANA,ondulação,-8.862,-61.201,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 TERRA PRETA,ondulação,-8.864,-61.267,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SANTO ANTONIO,ondulação,-8.880,-60.395,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -36,11 +36,11 @@ SANTANA,ondulação,-8.941,-61.583,62,62Certo,Em aprovação,Gilmar Acacio,01/09
 SAO JOSE,ondulação,-8.941,-61.278,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SAO DOMINGOS,ondulação,-8.948,-61.616,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALIANCA,ondulação,-8.954,-61.623,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-ALTAMIRA,ondulação,-8.966,-61.331,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+ALTAMIRA,buraco,-8.966,-61.331,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 POMBAL,ondulação,-8.985,-60.731,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-CUIU-CUIU,ondulação,-8.993,-60.399,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+CUIU-CUIU,buraco,-8.993,-60.399,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CARAPUCA,ondulação,-8.997,-60.771,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-PALOMETA,ondulação,-9.006,-61.556,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+PALOMETA,buraco,-9.006,-61.556,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 MUNDO NOVO,ondulação,-9.007,-61.620,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BELA VISTA,ondulação,-9.040,-61.557,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BOCA DO RIO PARDO,ondulação,-9.034,-60.334,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -59,9 +59,9 @@ BOCA DA ESPERANCA,ondulação,-9.208,-60.314,62,62Certo,Em aprovação,Gilmar Ac
 SAO FRANCISCO,ondulação,-9.229,-61.341,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 FAG II,ondulação,-9.238,-61.295,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 INDIO,ondulação,-9.240,-61.408,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-CARAUARI,ondulação,-9.240,-60.289,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-BOLIVIA,ondulação,-9.249,-61.395,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-PORTO RICO,ondulação,-9.254,-60.690,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+CARAUARI,buraco,-9.240,-60.289,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+BOLIVIA,buraco,-9.249,-61.395,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+PORTO RICO,buraco,-9.254,-60.690,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BUENOS AIRES,ondulação,-9.265,-61.677,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 GANGORRA,ondulação,-9.261,-60.287,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CHUVISCO,ondulação,-9.281,-60.685,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -78,10 +78,10 @@ SURUBIM,ondulação,-9.449,-60.262,62,62Certo,Em aprovação,Gilmar Acacio,01/09
 BARREIRO,ondulação,-9.485,-60.580,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 NOVA OLINDA,ondulação,-9.505,-61.355,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PEDRA,ondulação,-9.511,-60.245,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-AGUA AZUL,ondulação,-9.542,-60.233,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+AGUA AZUL,buraco,-9.542,-60.233,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ARAPARI,ondulação,-9.549,-61.316,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 GAIVOTA,ondulação,-9.551,-60.587,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-SANTA RITA,ondulação,-9.598,-60.661,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+SANTA RITA,buraco,-9.598,-60.661,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CACHOEIRA DO REDONDO,ondulação,-9.635,-60.669,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CACHOEIRA SECA,ondulação,-9.646,-60.159,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PRAIA GRANDE,ondulação,-9.660,-60.678,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -96,7 +96,7 @@ MEXICANO,ondulação,-10.665,-60.527,62,62Certo,Em aprovação,Gilmar Acacio,01/
 PROJETO VIDA NOVA,ondulação,-10.800,-61.599,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PROJETO INTEGRADO DE COLONIZACAO DO INCRA,ondulação,-10.836,-61.624,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CAPIVARA,ondulação,-10.968,-60.481,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-SAPECADO,ondulação,-10.986,-60.477,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+SAPECADO,buraco,-10.986,-60.477,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA CAPITAO MOA,ondulação,-11.132,-60.126,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CAMPO DA DUVIDA,ondulação,-12.584,-60.151,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 AROEIRA,ondulação,-12.734,-60.007,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -115,7 +115,7 @@ BOCAINA,ondulação,-15.426,-60.134,62,62Certo,Em aprovação,Gilmar Acacio,01/0
 DESTACAMENTO CASALVASCO,ondulação,-15.497,-60.073,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PANTANAL DA BAIA GRANDE,ondulação,-15.550,-60.160,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PANTANAL CINZAS,ondulação,-15.633,-60.155,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-PANTANAL DO POCAO,ondulação,-15.740,-60.154,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+PANTANAL DO POCAO,buraco-15.740,-60.154,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CAPAO DO ROMEIRO,ondulação,-15.777,-60.078,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 DESTACAMENTO SAO SIMAO,ondulação,-15.911,-60.151,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SAMAUMA,ondulação,-7.204,-58.136,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -164,7 +164,7 @@ COTRIGUACU,ondulação,-9.910,-58.563,41,41Certo,Em aprovação,Gilmar Acacio,01
 COMUNIDADE JUARA,ondulação,-9.360,-57.390,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 APIACAS,ondulação,-9.562,-57.393,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 COLONIZACAO IRMAOS MADE,ondulação,-9.794,-58.194,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-NOVA BANDEIRANTES,ondulação,-9.850,-57.815,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
+NOVA BANDEIRANTES,buraco,-9.850,-57.815,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 COLONIZACAO COTRIGUACU,ondulação,-9.849,-58.247,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ARIEL,ondulação,-9.870,-58.235,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CACHORRO SENTADO,ondulação,-9.907,-58.207,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -194,7 +194,7 @@ NONAI DO NORTE,ondulação,-10.521,-55.229,40,40Certo,Em aprovação,Gilmar Acac
 COLIDINHA,ondulação,-10.785,-54.962,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 COLIDER,ondulação,-10.807,-55.461,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 NOVA SANTA HELENA,ondulação,-10.857,-55.185,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
-NOVA VILA RICA,ondulação,-10.879,-55.280,40,40Certo,Em aprovação,Gilmar Acacio,01/09/2025
+NOVA VILA RICA,buraco,-10.879,-55.280,40,40Certo,Em aprovação,Gilmar Acacio,01/09/2025
 FILADELFIA,ondulação,-11.117,-59.118,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CASTANHEIRA,ondulação,-11.138,-58.609,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA CINTA LARGA,ondulação,-11.193,-59.246,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -216,7 +216,7 @@ ANALANDIA DO NORTE,ondulação,-11.247,-54.208,42,42Certo,Em aprovação,Gilmar 
 CLAUDIA,ondulação,-11.505,-54.876,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CABECEIRAS DO RIBEIRAO SELMO,ondulação,-11.695,-55.396,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA ESPIRRO,ondulação,-12.708,-59.907,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
-ALDEIA AROEIRA,ondulação,-12.724,-59.962,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
+ALDEIA AROEIRA,buraco,-12.724,-59.962,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CAMPOS NOVOS,ondulação,-12.735,-59.821,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA JUREMA,ondulação,-12.840,-58.918,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA VINTE DE SETEMBRO,ondulação,-12.875,-59.181,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -264,7 +264,7 @@ ALDEIA MAKUTIAKERE,ondulação,-14.361,-58.284,61,61Certo,Em aprovação,Gilmar 
 ALDEIA PARECIS,ondulação,-14.388,-58.221,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SAO MATEUS,ondulação,-14.399,-57.120,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALDEIA QUEIMADA,ondulação,-14.442,-58.148,61,61Certo,Em aprovação,Gilmar Acacio,01/09/2025
-ONZE DE JULHO,ondulação,-14.499,-57.533,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+ONZE DE JULHO,buraco,-14.499,-57.533,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SAPEZAL,ondulação,-14.565,-57.600,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 COMUNIDADE BOA VISTA,ondulação,-14.585,-57.523,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
 RETIRO AGROSSALTO,ondulação,-14.606,-57.822,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -344,7 +344,7 @@ GLEBA BOA VONTADE,ondulação,-15.067,-58.075,62,62Certo,Em aprovação,Gilmar A
 BARRA DO FURADO,ondulação,-15.103,-57.072,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BOA VONTADE,ondulação,-15.133,-57.953,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 DRACENA,ondulação,-15.134,-58.348,42,42Certo,Em aprovação,Gilmar Acacio,01/09/2025
-SAO JOAO,ondulação,-15.146,-57.065,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
+SAO JOAO,buracoo,-15.146,-57.065,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 ALEGRIA,ondulação,-15.175,-58.032,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BAIXADA ESTIRA,ondulação,-15.179,-57.288,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CRISTINOPOLIS,ondulação,-15.181,-57.991,40,40Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -451,7 +451,7 @@ ALEIXO,ondulação,-15.206,-56.282,62,62Certo,Em aprovação,Gilmar Acacio,01/09
 BURITI FECHADO,ondulação,-15.220,-56.990,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CAGADOS,ondulação,-15.232,-56.580,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 CEDRAL,ondulação,-15.233,-56.386,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
-JANGADA,ondulação,-15.236,-56.490,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
+JANGADA,buraco,-15.236,-56.490,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BAUS,ondulação,-15.236,-56.296,40,40Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PASSA TRES,ondulação,-15.247,-56.546,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
 BOCAIUVA,ondulação,-15.257,-56.182,62,62Certo,Em aprovação,Gilmar Acacio,01/09/2025
@@ -1182,6 +1182,7 @@ POUSO ALTO,trinca,-16.458,-53.037,42,42Certo,Em aprovação,Gilmar Acacio,01/09/
 RIBEIRAOZINHO,trinca,-16.487,-52.695,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 PONTE BRANCA,trinca,-16.764,-52.837,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
 SANTA RITA DO ARAGUAIA,trinca,-17.322,-53.206,41,41Certo,Em aprovação,Gilmar Acacio,01/09/2025
+
 
 
 
