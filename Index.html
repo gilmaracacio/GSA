@@ -1,260 +1,324 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Visualizador MapView 360 com Heatmap, Legenda e Busca de Localidades</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <style>
-    html, body { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; background: #f5f5f5; }
-    #map { width: 100%; height: 100%; }
-
-    /* Buscadores deslocados à direita */
-    .search-box {
-      position: absolute; top: 10px; left: 150px;
-      background: white; padding: 8px 12px; border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25); z-index: 1000;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .search-box input {
-      border: 1px solid #ccc; border-radius: 6px; padding: 4px 8px;
-      outline: none; min-width: 220px;
-    }
-    .search-box button {
-      background: #0078ff; color: white; border: none;
-      border-radius: 6px; padding: 4px 10px; cursor: pointer;
-    }
-    .search-box button:hover { background: #005fcc; }
-
-   
-
-
-
- /* Legenda com borda colorida */
-    .legend {
-      line-left: 18px; color: #333; background: white;
-      padding: 8px; border-radius: 8px;
-      border: 3px solid #0078ff; 
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25); font-size: 13px;
-      position: absolute;
-      top: 250px;
-      left: -100px;
-      z-index: 1000;
-    }
-    .legend i {
-      width: 14px; height: 14px; float: left;
-      margin-right: 6px; opacity: 0.9; border-radius: 50%;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Visualizador MapView 360 - MT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.css"/>
+<style>
+html, body { margin:0; padding:0; height:100%; font-family: Arial,sans-serif; background:#f5f5f5; overflow-x:hidden; }
+#map { width:100%; height:100%; }
+.search-box {
+  position:absolute; top:10px; left:50px;
+  background:white; padding:8px 12px; border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.25); z-index:1000;
+  display:flex; gap:6px; align-items:center;
+}
+.search-box input { border:1px solid #ccc; border-radius:6px; padding:4px 8px; outline:none; min-width:180px; }
+.search-box button { background:#0078ff; color:white; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; }
+.search-box button:hover { background:#005fcc; }
+.legend { 
+  line-height:18px; color:#333; background:white; padding:10px; border-radius:8px; 
+  box-shadow:0 2px 6px rgba(0,0,0,0.25); font-size:14px; position:absolute; 
+  top:70px; left:10px; z-index:1000; min-width:150px;
+}
+.legend-title { font-weight:bold; margin-bottom:8px; font-size:16px; }
+.legend-line { 
+  width:20px; height:20px; display:inline-block; margin-right:8px; 
+  border-radius:50%; vertical-align:middle; 
+}
+.coordinates { 
+  position:absolute; bottom:10px; right:10px; background:white; 
+  padding:5px 10px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.25); 
+  z-index:1000; font-size:12px; 
+}
+.toolbar { 
+  position:absolute; top:80px; left:10px; background:white; padding:8px; 
+  border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.25); z-index:1000; 
+  display:flex; flex-direction:column; gap:5px; 
+}
+.toolbar button { 
+  background:#f0f0f0; border:1px solid #ccc; border-radius:4px; 
+  padding:6px; cursor:pointer; font-size:12px; 
+}
+.toolbar button:hover { background:#e0e0e0; }
+</style>
 </head>
-
-
-
-
 <body>
-  <div class="search-box">
-    <!-- Localizador de códigos -->
-    <div>
-      <input type="text" id="searchInput" placeholder="Digite o código..." list="codigosDisponiveis">
-      <datalist id="codigosDisponiveis"></datalist>
-      <button onclick="buscarRegistro()">Buscar</button>
-    </div>
 
-   
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Digite o código..." list="codigosDisponiveis">
+  <datalist id="codigosDisponiveis"></datalist>
+  <button onclick="buscarRegistro()">Buscar</button>
+</div>
 
- <!-- Localizador de localidades do Google -->
-    <div>
-      <input id="googlePlacesInput" type="text" placeholder="Digite uma localidade...">
-      <button onclick="buscarLocalidade()">Ir para Localidade</button>
-    </div>
-  </div>
+<div id="map"></div>
+<div class="coordinates" id="coordinates">Lat: 0, Lon: 0</div>
 
-  <div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.js"></script>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+<script>
+const map = L.map('map', { zoomControl: true }).setView([-15.5989, -56.0949], 12); // Centered on Cuiabá
 
-  <!-- Google Places API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=SEU_API_KEY&libraries=places"></script>
+// BaseMaps Google
+const googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'], attribution:'Google Satélite', maxZoom:22});
+const googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'], attribution:'Google Híbrido', maxZoom:22});
+const googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'], attribution:'Google Terreno', maxZoom:22});
+const googleRoad = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'], attribution:'Google Roads', maxZoom:22});
 
- 
+const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:22, attribution:'&copy; OpenStreetMap'});
 
- <script>
-    const map = L.map('map').setView([-14.2350, -51.9253], 4);
+const baseMaps = { "OpenStreetMap": osm, "Google Satélite": googleSat, "Google Híbrido": googleHybrid, "Google Terreno": googleTerrain, "Google Roads": googleRoad };
+osm.addTo(map);
 
-   
+// Scale control
+L.control.scale({ position: 'bottomleft', metric: true, imperial: false }).addTo(map);
 
- // Mapas base
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 22, attribution: '&copy; OpenStreetMap contributors' });
-    const google = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { maxZoom: 22 });
-    const positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 22, attribution: '&copy; CartoDB' }).addTo(map);
+// Coordinate display
+map.on('mousemove', function(e) {
+  document.getElementById('coordinates').innerText = `Lat: ${e.latlng.lat.toFixed(5)}, Lon: ${e.latlng.lng.toFixed(5)}`;
+});
 
-    L.control.layers({
-      "OpenStreetMap": osm,
-      "Google Maps": google,
-      "CartoDB (Cinza)": positron
-    }).addTo(map);
+// GeoReDUS-inspired thematic styling
+const thematic = {
+  "buraco": { color: "#FF0000", radius: 12, label: "Buraco" }, // Red for road damage
+  "trinca": { color: "#FFA500", radius: 14, label: "Trinca" }, // Orange for cracks
+  "afundamento": { color: "#0000FF", radius: 16, label: "Afundamento" }, // Blue for depressions
+  "ondulação": { color: "#008000", radius: 18, label: "Ondulação" } // Green for undulations
+};
 
-    // Temática
-    const thematic = {
-      "buraco": { color: "red", radius: 12 },
-      "trinca": { color: "orange", radius: 14 },
-      "afundamento": { color: "blue", radius: 16 },
-      "ondulação": { color: "green", radius: 18 }
-    };
+const circleMap = {};
+const datalist = document.getElementById("codigosDisponiveis");
+const csvUrl = 'https://raw.githubusercontent.com/gilmaracacio/GSA/main/BASETS.csv';
+const typeLayers = {};
+Object.keys(thematic).forEach(t => typeLayers[t] = L.layerGroup().addTo(map));
 
-    const circleMap = {};
-    const datalist = document.getElementById("codigosDisponiveis");
-    const csvUrl = 'https://raw.githubusercontent.com/gilmaracacio/GSA/main/BASETS.csv';
+let currentBuffer = null;
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
 
-    // Camadas por tipo
-    const typeLayers = {};
-    Object.keys(thematic).forEach(t => {
-      typeLayers[t] = L.layerGroup().addTo(map);
+// Toolbar control
+const toolbarControl = L.control({ position: 'topleft' });
+toolbarControl.onAdd = function(map) {
+  const div = L.DomUtil.create('div', 'toolbar');
+  div.innerHTML = `
+    <button onclick="startDraw('polyline')">Desenhar Linha</button>
+    <button onclick="startDraw('polygon')">Desenhar Polígono</button>
+    <button onclick="startDraw('rectangle')">Desenhar Retângulo</button>
+    <button onclick="startDraw('marker')">Adicionar Marcador</button>
+    <button onclick="startMeasure()">Medir</button>
+    <button onclick="clearDrawings()">Limpar Desenhos</button>
+  `;
+  L.DomEvent.disableClickPropagation(div);
+  return div;
+};
+toolbarControl.addTo(map);
+
+// Drawing functions
+let currentDraw = null;
+function startDraw(type) {
+  if (currentDraw) currentDraw.disable();
+  if (measureControl) {
+    measureControl.remove();
+    measureControl = null;
+  }
+  if (type === 'polyline') {
+    currentDraw = new L.Draw.Polyline(map, { 
+      shapeOptions: { color: '#ff0000', weight: 3 },
+      metric: true
     });
-
-    // Parse CSV
-    function parseCSV(csvText) {
-      const lines = csvText.trim().split('\n');
-      const headers = lines[0].split(',').map(h => h.trim());
-      const features = [];
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
-        if (values.length < 6) continue;
-        const props = {};
-        headers.forEach((h, idx) => {
-          if (values[idx]) props[h] = values[idx].replace(/^"|"$/g, '').trim();
-        });
-        const lat = parseFloat(props.lat), lon = parseFloat(props.lon);
-        if (!isNaN(lat) && !isNaN(lon)) {
-          features.push({ coords: [lat, lon], props });
-        }
-      }
-      return features;
-    }
-
-    // Criar marcadores + heatmap
-    function createMarkers(features) {
-      const heatPoints = [];
-
-      features.forEach(f => {
-        const center = f.coords;
-        const p = f.props;
-        const style = thematic[p.tipo] || { color: "gray", radius: 10 };
-
-        const circle = L.circleMarker(center, {
-          radius: style.radius, color: style.color,
-          weight: 2, fillOpacity: 0.75, fillColor: style.color
-        });
-
-        circle.bindPopup(`
-          <b>Tipo:</b> ${p.tipo}<br>
-          <b>Código:</b> ${p.codigo}<br>
-          <b>Estatus:</b> ${p.Estatus}<br>
-          <b>Dado 1:</b> ${p.dado1}<br>
-          <b>Dado 2:</b> ${p.dado2}<br>
-          <b>Responsável:</b> ${p.responsavel}<br>
-          <b>Data:</b> ${p.data}
-        `);
-
-        circle.featureTipo = p.tipo;
-        circleMap[p.codigo] = circle;
-
-        if (typeLayers[p.tipo]) typeLayers[p.tipo].addLayer(circle);
-
-        heatPoints.push([center[0], center[1], 0.3]);
-
-        const opt = document.createElement("option");
-        opt.value = p.codigo;
-        datalist.appendChild(opt);
-      });
-
-      const heatLayer = L.heatLayer(heatPoints, {
-        radius: 50, blur: 35, maxZoom: 12,
-        gradient: {0.3:'rgba(0,0,255,0.4)',0.5:'lime',0.7:'orange',0.9:'red'}
-      }).addTo(map);
-
-      L.control.layers(null, { "Zonas de Concentração": heatLayer }).addTo(map);
-    }
-
-    // Legenda interativa
-    const legendControl = L.control({ position: 'topright' });
-
-    legendControl.onAdd = function(map) {
-      const div = L.DomUtil.create('div', 'legend');
-      div.innerHTML = '<strong>Tipos:</strong><br>';
-      Object.keys(thematic).forEach(t => {
-        const label = document.createElement("label");
-        label.style.display = 'flex';
-        label.style.alignItems = 'center';
-        label.style.gap = '6px';
-        label.innerHTML = `<input type="checkbox" checked data-type="${t}"> <i style="background:${thematic[t].color}"></i> ${t}`;
-        div.appendChild(label);
-      });
-      L.DomEvent.disableClickPropagation(div);
-      return div;
-    };
-
-    legendControl.addTo(map);
-
-    document.addEventListener('change', function(e){
-      if(e.target && e.target.tagName === 'INPUT' && e.target.dataset.type){
-        const type = e.target.dataset.type;
-        if(e.target.checked){
-          map.addLayer(typeLayers[type]);
-        } else {
-          map.removeLayer(typeLayers[type]);
-        }
-      }
+  } else if (type === 'polygon') {
+    currentDraw = new L.Draw.Polygon(map, { 
+      shapeOptions: { color: '#ff0000', weight: 3, fillOpacity: 0.3 },
+      showArea: true,
+      metric: true
     });
-
-    // Buscar registro
-    function buscarRegistro() {
-      const code = document.getElementById("searchInput").value.trim();
-      if (circleMap[code]) {
-        map.setView(circleMap[code].getLatLng(), 18);
-        circleMap[code].openPopup();
-      } else {
-        alert("Registro não encontrado!");
-      }
-    }
-
-    // Buscar localidade Google
-    let autocomplete;
-    function initAutocomplete() {
-      const input = document.getElementById('googlePlacesInput');
-      autocomplete = new google.maps.places.Autocomplete(input);
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
-        if (place.geometry && place.geometry.location) {
-          const lat = place.geometry.location.lat();
-          const lng = place.geometry.location.lng();
-          map.setView([lat, lng], 15);
-        }
-      });
-    }
-    function buscarLocalidade() {
-      const place = autocomplete.getPlace();
-      if (place && place.geometry && place.geometry.location) {
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        map.setView([lat, lng], 15);
-      } else {
-        alert("Localidade não encontrada!");
-      }
-    }
-
-    // Inicializa Google Autocomplete após carregar script
-    window.onload = initAutocomplete;
-
-    // Carregar CSV
-    fetch(csvUrl).then(r => r.text())
-      .then(data => {
-        const features = parseCSV(data);
-        createMarkers(features);
-        map.fitBounds(L.featureGroup(Object.values(circleMap)).getBounds());
+  } else if (type === 'rectangle') {
+    currentDraw = new L.Draw.Rectangle(map, { 
+      shapeOptions: { color: '#ff0000', weight: 3, fillOpacity: 0.3 },
+      showArea: true,
+      metric: true
+    });
+  } else if (type === 'marker') {
+    currentDraw = new L.Draw.Marker(map, {
+      icon: L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
       })
-      .catch(err => console.error("Erro ao carregar CSV:", err));
-  </script>
+    });
+  }
+  currentDraw.enable();
+}
+
+// Measurement control
+let measureControl = null;
+function startMeasure() {
+  if (currentDraw) currentDraw.disable();
+  if (measureControl) {
+    measureControl.remove();
+    measureControl = null;
+  } else {
+    measureControl = L.control.measure({
+      position: 'topright',
+      primaryLengthUnit: 'meters',
+      secondaryLengthUnit: undefined,
+      primaryAreaUnit: 'sqmeters',
+      secondaryAreaUnit: undefined,
+      activeColor: '#ff0000',
+      completedColor: '#ff0000',
+      captureZIndex: 10000
+    }).addTo(map);
+  }
+}
+
+// Clear drawings
+function clearDrawings() {
+  drawnItems.clearLayers();
+  if (currentDraw) currentDraw.disable();
+  if (measureControl) {
+    measureControl.remove();
+    measureControl = null;
+  }
+}
+
+// Handle created shapes
+map.on(L.Draw.Event.CREATED, function (e) {
+  const layer = e.layer;
+  let popupContent = `<b>Tipo:</b> ${e.layerType}<br><b>Adicionado em:</b> ${new Date().toLocaleString()}`;
+  
+  if (e.layerType === 'marker') {
+    const latlng = layer.getLatLng();
+    popupContent += `<br><b>Coordenadas:</b> Lat ${latlng.lat.toFixed(5)}, Lon ${latlng.lng.toFixed(5)}`;
+  } else if (e.layerType === 'polyline') {
+    const latlngs = layer.getLatLngs();
+    let distance = 0;
+    for (let i = 1; i < latlngs.length; i++) {
+      distance += map.distance(latlngs[i-1], latlngs[i]);
+    }
+    popupContent += `<br><b>Distância:</b> ${distance.toFixed(2)} metros`;
+  } else if (e.layerType === 'polygon' || e.layerType === 'rectangle') {
+    const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+    popupContent += `<br><b>Área:</b> ${area.toFixed(2)} m²`;
+  }
+  
+  layer.bindPopup(popupContent);
+  drawnItems.addLayer(layer);
+});
+
+// Parse CSV
+function parseCSV(csvText){
+  const lines = csvText.trim().split('\n');
+  const headers = lines[0].split(',').map(h=>h.trim());
+  const features = [];
+  for(let i=1;i<lines.length;i++){
+    const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+    if(values.length<6) continue;
+    const props = {};
+    headers.forEach((h,idx)=>{ if(values[idx]) props[h]=values[idx].replace(/^"|"$/g,'').trim(); });
+    const lat=parseFloat(props.lat), lon=parseFloat(props.lon);
+    if(!isNaN(lat)&&!isNaN(lon)) features.push({coords:[lat,lon], props});
+  }
+  return features;
+}
+
+// Criar marcadores
+function createMarkers(features){
+  features.forEach(f=>{
+    const center=f.coords;
+    const p=f.props;
+    const style=thematic[p.tipo] || { color:"gray", radius:10, label:"Desconhecido" };
+    const circle=L.circleMarker(center,{
+      radius: style.radius, 
+      color: style.color,
+      weight:2, 
+      fillOpacity:0.75, 
+      fillColor: style.color
+    });
+    circle.bindPopup(`
+      <b>Tipo:</b> ${style.label}<br>
+      <b>Código:</b> ${p.codigo}<br>
+      <b>Estatus:</b> ${p.Estatus}<br>
+      <b>Dado1:</b> ${p.dado1}<br>
+      <b>Dado2:</b> ${p.dado2}<br>
+      <b>Responsável:</b> ${p.responsavel}<br>
+      <b>Data:</b> ${p.data}<br>
+      <b>Coordenadas:</b> Lat ${center[0].toFixed(5)}, Lon ${center[1].toFixed(5)}
+    `);
+    circle.featureTipo = p.tipo;
+    circleMap[p.codigo] = circle;
+    if(typeLayers[p.tipo]) typeLayers[p.tipo].addLayer(circle);
+
+    // Buffer ao abrir popup
+    circle.on('popupopen', function(){
+      if(currentBuffer) map.removeLayer(currentBuffer);
+      currentBuffer = L.circle(center,{
+        radius:1000,
+        color:"#4169E1",
+        weight:3,
+        dashArray:'6,4',
+        fillColor:"#6495ED",
+        fillOpacity:0.5
+      }).addTo(map);
+    });
+
+    const opt=document.createElement("option"); opt.value=p.codigo; datalist.appendChild(opt);
+  });
+}
+
+// Legenda interativa (GeoReDUS-inspired)
+const legendControl=L.control({position:'bottomleft'});
+legendControl.onAdd=function(map){
+  const div=L.DomUtil.create('div','legend');
+  div.innerHTML='<div class="legend-title">Legenda - Problemas Viários</div>';
+  Object.keys(thematic).forEach(t=>{
+    const label=document.createElement("label");
+    label.style.display='flex'; 
+    label.style.alignItems='center'; 
+    label.style.gap='8px'; 
+    label.style.margin='4px 0';
+    label.innerHTML=`<input type="checkbox" checked data-type="${t}"> <div class="legend-line" style="background:${thematic[t].color}"></div> ${thematic[t].label}`;
+    div.appendChild(label);
+  });
+  L.DomEvent.disableClickPropagation(div);
+  return div;
+};
+legendControl.addTo(map);
+
+// Checkbox toggle
+document.addEventListener('change',function(e){
+  if(e.target && e.target.tagName==='INPUT' && e.target.dataset.type){
+    const t = e.target.dataset.type;
+    e.target.checked ? map.addLayer(typeLayers[t]) : map.removeLayer(typeLayers[t]);
+  }
+});
+
+// Buscar registro
+function buscarRegistro(){
+  const code=document.getElementById("searchInput").value.trim();
+  if(circleMap[code]){
+    map.setView(circleMap[code].getLatLng(),18);
+    circleMap[code].openPopup();
+  } else alert("Registro não encontrado!");
+}
+
+// Carregar CSV
+fetch(csvUrl).then(r=>r.text()).then(data=>{
+  const features=parseCSV(data);
+  createMarkers(features);
+  map.fitBounds(L.featureGroup(Object.values(circleMap)).getBounds());
+}).catch(err=>console.error("Erro ao carregar CSV:", err));
+
+// Layer control for base maps and drawn items
+const overlayMaps = {
+  "Desenhos": drawnItems
+};
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+</script>
 </body>
 </html>
